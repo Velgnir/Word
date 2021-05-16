@@ -68,10 +68,10 @@ RM = /home/paulo/Desktop/clion-2020.3.3/bin/cmake/linux/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/paulo/CLionProjects/untitled14
+CMAKE_SOURCE_DIR = /home/paulo/CLionProjects/untitled15
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/paulo/CLionProjects/untitled14/cmake-build-debug
+CMAKE_BINARY_DIR = /home/paulo/CLionProjects/untitled15/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -100,9 +100,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/paulo/CLionProjects/untitled14/cmake-build-debug/CMakeFiles /home/paulo/CLionProjects/untitled14/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/paulo/CLionProjects/untitled15/cmake-build-debug/CMakeFiles /home/paulo/CLionProjects/untitled15/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/paulo/CLionProjects/untitled14/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/paulo/CLionProjects/untitled15/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -131,17 +131,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named untitled14
+# Target rules for targets named untitled15
 
 # Build rule for target.
-untitled14: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 untitled14
-.PHONY : untitled14
+untitled15: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 untitled15
+.PHONY : untitled15
 
 # fast build rule for target.
-untitled14/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled14.dir/build.make CMakeFiles/untitled14.dir/build
-.PHONY : untitled14/fast
+untitled15/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled15.dir/build.make CMakeFiles/untitled15.dir/build
+.PHONY : untitled15/fast
 
 main.o: main.cpp.o
 
@@ -149,7 +149,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled14.dir/build.make CMakeFiles/untitled14.dir/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled15.dir/build.make CMakeFiles/untitled15.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -158,7 +158,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled14.dir/build.make CMakeFiles/untitled14.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled15.dir/build.make CMakeFiles/untitled15.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -167,7 +167,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled14.dir/build.make CMakeFiles/untitled14.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled15.dir/build.make CMakeFiles/untitled15.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -178,7 +178,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... untitled14"
+	@echo "... untitled15"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
