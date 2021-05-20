@@ -5,11 +5,16 @@
 #include <vector>
 #include <sstream>
 #include <map>
+#include <thread>
+
+
+
 
 int main(int argc, char *argv[]) {
     //part 0:
     std::string b; // path to file
     std::string word; // it is using for read text from file
+    std::string zero_word;
     int count_bug;  // it is using for correcting work of cycle after deleting some chars from words
     std::map<std::string, size_t> map_of_words;
 
@@ -32,29 +37,22 @@ int main(int argc, char *argv[]) {
     }
 
 
-    //part 2(we are reading text from file):
-    while(file>>word) {
-        count_bug = 0;
-        for (size_t i = 0; i < word.length() + count_bug; ++i) {
-            if (!isalpha(word[i - count_bug])) {
-                word.erase(i - count_bug, 1);
-                count_bug += 1;
-            } else {
-                word[i - count_bug] = tolower(word[i - count_bug]);
-            }
-        }// part 3(we are making map with our words):
-        if (word.length() > 0) {
+    //part 2-3
+    file>>word;
+    preprocessing(&word);
+    zero_word = word;
+    while(file>>word){
+        std::thread t(preprocessing, &word);
+        std::thread t2(map_word_adder, zero_word, &map_of_words);
 
-            auto itr = map_of_words.find(word);
-            if (itr != map_of_words.end()) {
-                map_of_words[word] += 1;
-            } else {
-                map_of_words.insert(make_pair(word, 1));
-            }
-        }
+        t.join();
+        t2.join();
+
+        zero_word =word;
     }
 
 
     //part 5(PRINT):
     print(map_of_words,"../filea.txt","../filen.txt");
 }
+

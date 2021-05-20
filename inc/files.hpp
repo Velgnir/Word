@@ -38,3 +38,60 @@ void print(const std::map<std::string, size_t> &map_of_words, const std::string 
     outfile_alpha.close();
     outfile_number.close();
 }
+
+
+
+
+void preprocessing(std::string *word) {
+    int count_bug = 0;
+    std::string wordn;
+    wordn = *word;
+    for (size_t i = 0; i < wordn.length() + count_bug; ++i) {
+        if (!isalpha(wordn[i - count_bug])) {
+            wordn.erase(i - count_bug, 1);
+            count_bug += 1;
+        } else {
+            wordn[i - count_bug] = tolower(wordn[i - count_bug]);
+        }
+    }
+    *word = wordn;
+}
+
+
+void map_word_adder(std::string word, std::map<std::string, size_t> *map_of_words){
+std::map<std::string, size_t> map_of_wordn = *map_of_words;
+    if (word.length() > 0) {
+
+        auto itr = map_of_wordn.find(word);
+        if (itr != map_of_wordn.end()) {
+            map_of_wordn[word] += 1;
+        } else {
+            map_of_wordn.insert(make_pair(word, 1));
+        }
+    }
+	*map_of_words = map_of_wordn;
+}
+
+
+
+/*//part 2(we are reading text from file):
+    while(file>>word) {
+        count_bug = 0;
+        for (size_t i = 0; i < word.length() + count_bug; ++i) {
+            if (!isalpha(word[i - count_bug])) {
+                word.erase(i - count_bug, 1);
+                count_bug += 1;
+            } else {
+                word[i - count_bug] = tolower(word[i - count_bug]);
+            }
+        }// part 3(we are making map with our words):
+        if (word.length() > 0) {
+
+            auto itr = map_of_words.find(word);
+            if (itr != map_of_words.end()) {
+                map_of_words[word] += 1;
+            } else {
+                map_of_words.insert(make_pair(word, 1));
+            }
+        }
+    }*/
