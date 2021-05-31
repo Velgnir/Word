@@ -28,7 +28,9 @@ int main(int argc, char *argv[]) {
         b = "../input.txt";
 
     }
-    std::ifstream file(b);//file on the 'b' path
+    std::ifstream file(b);
+    auto
+            full_file = static_cast<std::ostringstream &>(std::ostringstream{} << file.rdbuf()).str();
     if (!file) {
         std::cout << "file wasn't open" << std::endl;
         exit(1);
@@ -36,19 +38,12 @@ int main(int argc, char *argv[]) {
         std::cout << "file was open" << std::endl;
     }
 
-
+    std::stringstream full_file_text;
+    full_file_text << full_file;
     //part 2-3
-    file>>word;
-    preprocessing(&word);
-    zero_word = word;
-    while(file>>word){
-        std::thread t(preprocessing, &word);
-        std::thread t2(map_word_adder, zero_word, &map_of_words);
-
-        t.join();
-        t2.join();
-
-        zero_word =word;
+    while(full_file_text>>word){
+        preprocessing(&word);
+        map_word_adder(word, &map_of_words);
     }
 
 

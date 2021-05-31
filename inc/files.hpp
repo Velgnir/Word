@@ -62,12 +62,7 @@ void map_word_adder(std::string word, std::map<std::string, size_t> *map_of_word
 std::map<std::string, size_t> map_of_wordn = *map_of_words;
     if (word.length() > 0) {
 
-        auto itr = map_of_wordn.find(word);
-        if (itr != map_of_wordn.end()) {
-            map_of_wordn[word] += 1;
-        } else {
-            map_of_wordn.insert(make_pair(word, 1));
-        }
+       map_of_wordn[word] += 1;
     }
 	*map_of_words = map_of_wordn;
 }
