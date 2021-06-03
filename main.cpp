@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
     full_file_text << full_file;
     //part 2-3
     while(full_file_text>>word){
-        preprocessing(&word);
+        preprocessing(word);
         map_word_adder(word, &map_of_words);
     }
 
