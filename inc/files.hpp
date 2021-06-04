@@ -55,13 +55,11 @@ void preprocessing(std::string& word) {
 }
 
 
-void map_word_adder(std::string word, std::map<std::string, size_t> *map_of_words){
-std::map<std::string, size_t> map_of_wordn = *map_of_words;
+void map_word_adder(std::string word, std::map<std::string, size_t>& map_of_words){
     if (word.length() > 0) {
 
-       map_of_wordn[word] += 1;
+       map_of_words[word] += 1;
     }
-	*map_of_words = map_of_wordn;
 }
 
 
