@@ -1,4 +1,4 @@
-#include "./inc/files.hpp"
+#include "files.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -6,9 +6,6 @@
 #include <sstream>
 #include <map>
 #include <thread>
-
-
-
 
 int main(int argc, char *argv[]) {
     //part 0:
@@ -18,19 +15,14 @@ int main(int argc, char *argv[]) {
     int count_bug;  // it is using for correcting work of cycle after deleting some chars from words
     std::map<std::string, size_t> map_of_words;
 
-
-
-
     //part 1(i didn't change it):
     if (argc > 1) {
         b = std::string{argv[1]};
     } else {
-        b = "../input.txt";
-
+        b = "input.txt";
     }
     std::ifstream file(b);
-    auto
-            full_file = static_cast<std::ostringstream &>(std::ostringstream{} << file.rdbuf()).str();
+    auto full_file = static_cast<std::ostringstream &>(std::ostringstream{} << file.rdbuf()).str();
     if (!file) {
         std::cout << "file wasn't open" << std::endl;
         exit(1);
@@ -46,8 +38,7 @@ int main(int argc, char *argv[]) {
         map_word_adder(word, map_of_words);
     }
 
-
     //part 5(PRINT):
-    print(map_of_words,"../filea.txt","../filen.txt");
+    print(map_of_words,"filea.txt","filen.txt");
 }
 

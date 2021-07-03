@@ -5,6 +5,8 @@ project(untitled15)
 find_package(Threads REQUIRED)
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(untitled15 main.cpp)
+include_directories(inc)
+
+add_executable(untitled15 main.cpp src/files.cpp)
 
 target_link_libraries(untitled15 ${CMAKE_THREAD_LIBS_INIT})
