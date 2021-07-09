@@ -24,3 +24,5 @@ void print(const std::map<std::string, size_t> &map_of_words,
 void preprocessing(std::string& word);
 
 void map_word_adder(const std::string word, std::map<std::string, size_t>& map_of_words);
+
+void t(std::vector<std::string> dict, std::map<std::string, size_t> *map, int limit_1, int limit_2);
