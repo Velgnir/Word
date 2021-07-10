@@ -6,18 +6,34 @@
 #include <map>
 #include <thread>
 
-void counting_words(const std::vector<std::string>& dictionary, std::map<std::string, size_t>& map, const size_t limit1, const size_t limit2){
+void counting_words(const std::vector<std::string>& dictionary, std::vector<std::map<std::string, size_t>> all_maps, const size_t limit){
     std::string word;
-    for (size_t i = limit1; i < limit2; ++i) {
-        word = dictionary[i];
-        preprocessing(word);
-        map_word_adder(word, map);
+    size_t counted_word=0;
+    for (size_t j = 0; j < all_maps.size(); ++j) {
+        for (size_t i = j*limit; i < (j+1)*limit; ++i) {
+            counted_word++;
+            word = dictionary[i];
+            preprocessing(word);
+            map_word_adder(word, all_maps[j]);
+            if (counted_word==dictionary.size())
+                break;
+            else if (counted_word+limit>dictionary.size()){
+                for (size_t k = 1; k < counted_word+limit-dictionary.size(); ++k) {
+                    word = dictionary[i+k];
+                    preprocessing(word);
+                    map_word_adder(word, all_maps[j]);
+                }
+                break;
+            }
+        }
     }
 }
 
-void merge_2_maps(std::map<std::string, size_t>& map1, const std::map<std::string, size_t>& map2){
-    for( auto const& [word, number] : map2){
-        map1[word]+=number;
+void merge_all_maps(std::vector<std::map<std::string, size_t>> all_maps){
+    for (size_t i = 1; i < all_maps.size(); ++i) {
+        for (auto const&[word, number] : all_maps[i]) {
+            all_maps[0][word] += number;
+        }
     }
 }
 
@@ -27,7 +43,8 @@ int main(int argc, char *argv[]) {
     std::string word; // it is using for read text from file
     std::string zero_word;
     // it is using for correcting work of cycle after deleting some chars from words
-    std::map<std::string, size_t> map_of_words;
+    std::vector<std::map<std::string, size_t>> all_maps;
+    size_t number_of_thread = (size_t)argv[2];
 
     //part 1(i didn't change it):
     if (argc > 1) {
@@ -45,25 +62,21 @@ int main(int argc, char *argv[]) {
     }
 
     std::vector<std::string> dict;
-    std::map<std::string, size_t> map_of_second_part;
     std::stringstream full_file_text;
     full_file_text << full_file;
     while (full_file_text>>word){
        dict.push_back(word);
     }
-    std::thread t1,t2;
-    if (dict.size() % 2 == 0) {
-        t1 = std::thread(counting_words, dict, std::ref(map_of_words), 0, dict.size()/2);
-        t2 = std::thread(counting_words, dict, std::ref(map_of_second_part), dict.size()/2, dict.size());
+    std::vector<std::thread> th;
+    th.reserve(number_of_thread);
+    for (auto &t: th) {
+        t = std::thread(counting_words, dict, std::ref(all_maps), dict.size()/number_of_thread);
     }
-    else{
-        t1 = std::thread(counting_words, dict, std::ref(map_of_words), 0, (dict.size()-1)/2);
-        t2 = std::thread(counting_words, dict, std::ref(map_of_second_part), (dict.size()-1)/2, dict.size());
+    for (auto &t:th) {
+        t.join();
     }
-    t1.join();
-    t2.join();
-    merge_2_maps(map_of_words, map_of_second_part);
+    merge_all_maps(all_maps);
     //part 5(PRINT):
-    print(map_of_words,"filea.txt","filen.txt");
+    print(all_maps[0],"filea.txt","filen.txt");
 }
 
