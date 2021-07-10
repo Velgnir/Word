@@ -11,7 +11,7 @@ void counting_words(const std::vector<std::string>& dictionary, std::map<std::st
     for (size_t i = limit1; i < limit2; ++i) {
         word = dictionary[i];
         preprocessing(word);
-        map[word]+=1;
+        map_word_adder(word, map);
     }
 }
 
@@ -53,12 +53,12 @@ int main(int argc, char *argv[]) {
     }
     std::thread t1,t2;
     if (dict.size() % 2 == 0) {
-        t1 = std::thread(counting_words, dict, map_of_words, 0, dict.size()/2);
-        t2 = std::thread(counting_words, dict, map_of_second_part, dict.size()/2, dict.size());
+        t1 = std::thread(counting_words, dict, std::ref(map_of_words), 0, dict.size()/2);
+        t2 = std::thread(counting_words, dict, std::ref(map_of_second_part), dict.size()/2, dict.size());
     }
     else{
-        t1 = std::thread(counting_words, dict, map_of_words, 0, (dict.size()-1)/2);
-        t2 = std::thread(counting_words, dict, map_of_second_part, (dict.size()-1)/2, dict.size());
+        t1 = std::thread(counting_words, dict, std::ref(map_of_words), 0, (dict.size()-1)/2);
+        t2 = std::thread(counting_words, dict, std::ref(map_of_second_part), (dict.size()-1)/2, dict.size());
     }
     t1.join();
     t2.join();
