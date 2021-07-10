@@ -44,12 +44,3 @@ void map_word_adder(const std::string word, std::map<std::string, size_t>& map_o
         map_of_words[word] += 1;
     }
 }
-
-void t(std::vector<std::string> dict, std::map<std::string, size_t> *mapt, int limit_1, int limit_2){
-    std::map<std::string, size_t> map = *mapt;
-    for (int i = limit_1; i<limit_2; ++i){
-        preprocessing(dict[i]);
-        map[dict[i]]+=1;
-    }
-    mapt = &map;
-}
