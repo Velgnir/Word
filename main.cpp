@@ -6,26 +6,15 @@
 #include <map>
 #include <thread>
 
-void counting_words(const std::vector<std::string>& dictionary, std::vector<std::map<std::string, size_t>> all_maps, const size_t limit){
+void counting_words(const std::vector<std::string>& dictionary, std::vector<std::map<std::string, size_t>> all_maps, const size_t limit,const size_t number_of_thread){
     std::string word;
-    size_t counted_word=0;
-    for (size_t j = 0; j < all_maps.size(); ++j) {
-        for (size_t i = j*limit; i < (j+1)*limit; ++i) {
-            counted_word++;
-            word = dictionary[i];
-            preprocessing(word);
-            map_word_adder(word, all_maps[j]);
-            if (counted_word==dictionary.size())
-                break;
-        }
-        if (counted_word+limit>dictionary.size()){
-            for (size_t k = 1; k < counted_word+limit-dictionary.size(); ++k) {
-                word = dictionary[counted_word+k];
-                preprocessing(word);
-                map_word_adder(word, all_maps[j]);
-            }
-            break;
-        }
+    size_t other_words = 0;
+    if (number_of_thread == all_maps.size()-1)
+        other_words = dictionary.size()-((number_of_thread+1)*limit);
+    for (int i = number_of_thread*limit; i < (number_of_thread+1)*limit+other_words; ++i) {
+        word = dictionary[i];
+        preprocessing(word);
+        all_maps[number_of_thread][word] += 1;
     }
 }
 
@@ -42,15 +31,17 @@ int main(int argc, char *argv[]) {
     std::string b; // path to file
     std::string word; // it is using for read text from file
     std::string zero_word;
+    size_t number_of_threads;
     // it is using for correcting work of cycle after deleting some chars from words
     std::vector<std::map<std::string, size_t>> all_maps;
-    size_t number_of_thread = (size_t)argv[2];
-
     //part 1(i didn't change it):
     if (argc > 1) {
         b = std::string{argv[1]};
-    } else {
+        size_t number_of_threads = (size_t)argv[2];
+    }
+    else {
         b = "input.txt";
+        size_t number_of_threads = 4;
     }
     std::ifstream file(b);
     auto full_file = dynamic_cast<std::ostringstream &>(std::ostringstream{} << file.rdbuf()).str();
@@ -68,9 +59,9 @@ int main(int argc, char *argv[]) {
        dict.push_back(word);
     }
     std::vector<std::thread> th;
-    th.reserve(number_of_thread);
-    for (auto &t: th) {
-        t = std::thread(counting_words, dict, std::ref(all_maps), dict.size()/number_of_thread);
+    th.reserve(number_of_threads);
+    for (int i = 0; i < number_of_threads; ++i) {
+        th[i] = std::thread(counting_words, dict, std::ref(all_maps), (size_t)(dict.size()/number_of_threads), i);
     }
     for (auto &t:th) {
         t.join();
