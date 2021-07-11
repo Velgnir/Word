@@ -15,6 +15,8 @@ void counting_words(const std::vector<std::string>& dictionary, std::vector<std:
         word = dictionary[i];
         preprocessing(word);
         all_maps[number_of_thread][word] += 1;
+        if (i==dictionary.size()-1)
+            break;
     }
 }
 
