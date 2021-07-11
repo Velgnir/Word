@@ -17,14 +17,14 @@ void counting_words(const std::vector<std::string>& dictionary, std::vector<std:
             map_word_adder(word, all_maps[j]);
             if (counted_word==dictionary.size())
                 break;
-            else if (counted_word+limit>dictionary.size()){
-                for (size_t k = 1; k < counted_word+limit-dictionary.size(); ++k) {
-                    word = dictionary[i+k];
-                    preprocessing(word);
-                    map_word_adder(word, all_maps[j]);
-                }
-                break;
+        }
+        if (counted_word+limit>dictionary.size()){
+            for (size_t k = 1; k < counted_word+limit-dictionary.size(); ++k) {
+                word = dictionary[counted_word+k];
+                preprocessing(word);
+                map_word_adder(word, all_maps[j]);
             }
+            break;
         }
     }
 }
