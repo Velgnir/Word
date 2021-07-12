@@ -60,9 +60,9 @@ int main(int argc, char *argv[]) {
     while (full_file_text>>word){
         dict.push_back(word);
     }
-    std::map<std::string, size_t> n;
+    std::map<std::string, size_t> map_for_cloning;
     for (int i = 0; i < number_of_threads; ++i) {
-        all_maps.push_back(n);
+        all_maps.push_back(map_for_cloning);
     }
     std::vector<std::thread> th;
     for (int i = 0; i < number_of_threads; ++i) {
