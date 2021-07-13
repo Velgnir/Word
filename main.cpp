@@ -6,28 +6,6 @@
 #include <map>
 #include <thread>
 
-void counting_words(const std::vector<std::string>& dictionary, std::vector<std::map<std::string, size_t>>& all_maps, const size_t limit,const size_t number_of_thread){
-    std::string word;
-    size_t other_words = 0;
-    if (number_of_thread == all_maps.size()-1)
-        other_words = dictionary.size()-((number_of_thread+1)*limit);
-    for (int i = number_of_thread*limit; i < (number_of_thread+1)*limit+other_words; ++i) {
-        word = dictionary[i];
-        preprocessing(word);
-        map_word_adder(word, all_maps[number_of_thread]);
-        if (i==dictionary.size()-1)
-            break;
-    }
-}
-
-void merge_all_maps(std::vector<std::map<std::string, size_t>>& all_maps){
-    for (size_t i = 1; i < all_maps.size(); ++i) {
-        for (auto const&[word, number] : all_maps[i]) {
-            all_maps[0][word] += number;
-        }
-    }
-}
-
 int main(int argc, char *argv[]) {
     //part 0:
     std::string b; // path to file
@@ -66,7 +44,7 @@ int main(int argc, char *argv[]) {
     }
     std::vector<std::thread> th;
     for (int i = 0; i < number_of_threads; ++i) {
-        th.push_back(std::thread(counting_words, dict, std::ref(all_maps), (size_t)(dict.size()/number_of_threads), i));
+        th.emplace_back(std::thread(counting_words, dict, std::ref(all_maps), (size_t)(dict.size()/number_of_threads), i));
     }
     for (auto &t:th) {
         t.join();
