@@ -2,16 +2,17 @@
 
 void preprocessing(std::string& word) {
     int count_bug = 0;
-    for (size_t i = 0; i < word.length() + count_bug; ++i) {
+    size_t i = 0;
+    while(i < word.length() + count_bug) {
         if (!isalpha(word[i - count_bug])) {
             word.erase(i - count_bug, 1);
             count_bug += 1;
         } else {
             word[i - count_bug] = tolower(word[i - count_bug]);
         }
+        i++;
     }
 }
-
 
 void map_word_adder(const std::string& word, std::map<std::string, size_t>& map_of_words){
     if (word.length() > 0) {
@@ -19,15 +20,15 @@ void map_word_adder(const std::string& word, std::map<std::string, size_t>& map_
     }
 }
 
-void counting_words(const std::vector<std::string>& dictionary, std::vector<std::map<std::string, size_t>>& all_maps, const size_t limit,const size_t number_of_thread){
+void counting_words(const std::vector<std::string>& dictionary, std::map<std::string, size_t>& map, const size_t limit,const size_t number_of_thread){
     std::string word;
     size_t other_words = 0;
-    if (number_of_thread == all_maps.size()-1)
+    if (number_of_thread == map.size()-1)
         other_words = dictionary.size()-((number_of_thread+1)*limit);
-    for (int i = number_of_thread*limit; i < (number_of_thread+1)*limit+other_words; ++i) {
+    for (size_t i = number_of_thread*limit; i < (number_of_thread+1)*limit+other_words; ++i) {
         word = dictionary[i];
         preprocessing(word);
-        map_word_adder(word, all_maps[number_of_thread]);
+        map_word_adder(word, map);
         if (i==dictionary.size()-1)
             break;
     }

@@ -41,12 +41,12 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < number_of_threads; ++i) {
         all_maps.push_back(map_for_cloning);
     }
-    std::vector<std::thread> th;
+    std::vector<std::thread> vector_of_threads;
     for (int i = 0; i < number_of_threads; ++i) {
-        th.emplace_back(std::thread(counting_words, dict, std::ref(all_maps), (size_t)(dict.size()/number_of_threads), i));
+        vector_of_threads.emplace_back(std::thread(counting_words, dict, std::ref(all_maps[i]), (size_t)(dict.size()/number_of_threads), i));
     }
-    for (auto &t:th) {
-        t.join();
+    for (auto &thread:vector_of_threads) {
+        thread.join();
     }
     merge_all_maps(all_maps);
     //part 5(PRINT):
