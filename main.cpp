@@ -1,4 +1,5 @@
 #include "files.hpp"
+#include "counter.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -8,22 +9,18 @@
 
 int main(int argc, char *argv[]) {
     //part 0:
-    std::string b; // path to file
-    std::string word; // it is using for read text from file
-    std::string zero_word;
+    std::string file_path; // path to file
     int number_of_threads;
-    // it is using for correcting work of cycle after deleting some chars from words
-    std::vector<std::map<std::string, size_t>> all_maps;
     //part 1(i didn't change it):
     if (argc > 1) {
-        b = std::string{argv[1]};
-        number_of_threads = (size_t)argv[2];
+        file_path = std::string{argv[1]};
+        number_of_threads = std::stoi(argv[2]);
     }
     else {
-        b = "input.txt";
+        file_path = "input.txt";
         number_of_threads = 4;
     }
-    std::ifstream file(b);
+    std::ifstream file(file_path);
     auto full_file = dynamic_cast<std::ostringstream &>(std::ostringstream{} << file.rdbuf()).str();
     if (!file) {
         std::cout << "file wasn't open" << std::endl;
@@ -33,12 +30,14 @@ int main(int argc, char *argv[]) {
     }
 
     std::vector<std::string> dict;
+    std::string word; // it is using for read text from file
     std::stringstream full_file_text;
     full_file_text << full_file;
     while (full_file_text>>word){
         dict.push_back(word);
     }
     std::map<std::string, size_t> map_for_cloning;
+    std::vector<std::map<std::string, size_t>> all_maps;
     for (int i = 0; i < number_of_threads; ++i) {
         all_maps.push_back(map_for_cloning);
     }
