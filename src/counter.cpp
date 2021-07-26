@@ -37,19 +37,3 @@ void merge_all_maps(std::vector<std::map<std::string, size_t>> &all_maps) {
         }
     }
 }
-
-void divide_all_dictionaries(std::vector<std::vector<std::string>> &all_dicts,
-                             const std::vector<std::string> &dictionary,
-                             const int limit) {
-    size_t other_words = dictionary.size() - limit * all_dicts.size();
-    int one_word = 1;
-    for (size_t number_of_dictionary = 0; number_of_dictionary < all_dicts.size(); ++number_of_dictionary) {
-        if (other_words < number_of_dictionary + 1)
-            other_words = 0;
-        for (size_t number_of_word = limit * number_of_dictionary;
-             number_of_word < limit * (number_of_dictionary + 1) + one_word;
-             ++number_of_word) {
-            all_dicts[number_of_dictionary].push_back(dictionary[number_of_word]);
-        }
-    }
-}

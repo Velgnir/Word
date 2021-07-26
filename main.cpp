@@ -35,25 +35,25 @@ int main(int argc, char *argv[]) {
     while (full_file_text >> word) {
         dict.push_back(word);
     }
-    std::map<std::string, size_t> map_for_cloning;
+
     std::vector<std::map<std::string, size_t>> all_maps;
-    for (int i = 0; i < number_of_threads; ++i) {
-        all_maps.push_back(map_for_cloning);
-    }
+    all_maps.resize(number_of_threads);
 
-    std::vector<std::vector<std::string>> all_dicts;
-    std::vector<std::string> dicionary_for_cloning;
-    for (int i = 0; i < number_of_threads; ++i) {
-        all_dicts.push_back(dicionary_for_cloning);
-
+    std::vector<std::vector<std::string>> all_dicts;        
+    for (int i = 0; i < number_of_threads - 1; ++i) {
+        all_dicts.push_back(std::vector<std::string> (dict.begin() + i*((size_t) (dict.size() / number_of_threads)),
+                                                      dict.begin() + (i+1)*((size_t) (dict.size() / number_of_threads))));
     }
-    divide_all_dictionaries(all_dicts, dict, (size_t) (dict.size() / number_of_threads));
+    all_dicts.push_back(std::vector<std::string> (dict.begin() + (number_of_threads-2)*((size_t) (dict.size() / number_of_threads)),
+                                                  dict.end()));
     std::vector<std::thread> vector_of_threads;
-    for (int i = 0; i < number_of_threads; ++i) {
+    for (int i = 0; i < number_of_threads-1; ++i) {
         vector_of_threads.emplace_back(counting_words,
                                        std::ref(all_dicts[i]),
                                        std::ref(all_maps[i]));
     }
+
+    counting_words(all_dicts[number_of_threads-1], all_maps[number_of_threads-1]);
     for (auto &thread:vector_of_threads) {
         thread.join();
     }
